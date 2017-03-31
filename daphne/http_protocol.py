@@ -129,7 +129,7 @@ class WebRequest(http.Request):
                 else:
                     logger.debug("Connection %s did not get successful WS handshake.", self.reply_channel)
                 del self.factory.reply_protocols[self.reply_channel]
-                self.reply_channel = None
+                self.reply_channel = 'websocket.send!'
                 # Resume the producer so we keep getting data, if it's available as a method
                 # 17.1 version
                 if hasattr(self.channel, "_networkProducer"):
