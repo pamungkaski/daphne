@@ -341,12 +341,12 @@ class HTTPFactory(http.HTTPFactory):
             logger.error("Cannot build protocol: %s" % traceback.format_exc())
             raise
 
-    def make_send_channel(self, channel):
+    def make_send_channel(self):
         """
         Makes a new send channel for a protocol with our process prefix.
         """
         protocol_id = "".join(random.choice(string.ascii_letters) for i in range(10))
-        self.send_channel = self.reply_protocols[channel]
+        self.send_channel = self.reply_protocols[self.reply_channels()]
         return self.send_channel + protocol_id
 
     def reply_channels(self):
