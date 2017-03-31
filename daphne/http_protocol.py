@@ -346,7 +346,7 @@ class HTTPFactory(http.HTTPFactory):
         Makes a new send channel for a protocol with our process prefix.
         """
         protocol_id = "".join(random.choice(string.ascii_letters) for i in range(10))
-        self.send_channel = self.reply_protocols[self.reply_channels()]
+        self.send_channel = self.reply_protocols[something]# some thing must be changed here
         return self.send_channel + protocol_id
 
     def reply_channels(self):
