@@ -54,7 +54,7 @@ class WebRequest(http.Request):
             # Easy factory link
             self.factory = self.channel.factory
             # Make a name for our reply channel
-            self.reply_channel = "websocket.send!"
+            self.reply_channel = self.factory.replys_channel()
             # Tell factory we're that channel's client
             self.last_keepalive = time.time()
             self.factory.reply_protocols[self.reply_channel] = self
@@ -305,7 +305,7 @@ class HTTPFactory(http.HTTPFactory):
     routed appropriately.
     """
 
-    def __init__(self, channel_layer, action_logger=None, send_channel="http.response!", timeout=120, websocket_timeout=86400, ping_interval=20, ping_timeout=30, ws_protocols=None, root_path="", websocket_connect_timeout=30, proxy_forwarded_address_header=None, proxy_forwarded_port_header=None):
+    def __init__(self, channel_layer, action_logger=None, send_channel=None, timeout=120, websocket_timeout=86400, ping_interval=20, ping_timeout=30, ws_protocols=None, root_path="", websocket_connect_timeout=30, proxy_forwarded_address_header=None, proxy_forwarded_port_header=None):
         http.HTTPFactory.__init__(self)
         self.channel_layer = channel_layer
         self.action_logger = action_logger
@@ -346,6 +346,7 @@ class HTTPFactory(http.HTTPFactory):
         Makes a new send channel for a protocol with our process prefix.
         """
         protocol_id = "".join(random.choice(string.ascii_letters) for i in range(10))
+        self.send_channel = self.reply_protocols[self.reply_channel]
         return self.send_channel + protocol_id
 
     def reply_channels(self):
