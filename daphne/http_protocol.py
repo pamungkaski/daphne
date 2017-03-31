@@ -54,7 +54,7 @@ class WebRequest(http.Request):
             # Easy factory link
             self.factory = self.channel.factory
             # Make a name for our reply channel
-            self.reply_channel = self.factory.make_send_channel()
+            self.reply_channel = "websocket.send!"
             # Tell factory we're that channel's client
             self.last_keepalive = time.time()
             self.factory.reply_protocols[self.reply_channel] = self
@@ -129,7 +129,7 @@ class WebRequest(http.Request):
                 else:
                     logger.debug("Connection %s did not get successful WS handshake.", self.reply_channel)
                 del self.factory.reply_protocols[self.reply_channel]
-                self.reply_channel = 'websocket.send!'
+                self.reply_channel = None
                 # Resume the producer so we keep getting data, if it's available as a method
                 # 17.1 version
                 if hasattr(self.channel, "_networkProducer"):
@@ -305,7 +305,7 @@ class HTTPFactory(http.HTTPFactory):
     routed appropriately.
     """
 
-    def __init__(self, channel_layer, action_logger=None, send_channel='http.response!', timeout=120, websocket_timeout=86400, ping_interval=20, ping_timeout=30, ws_protocols=None, root_path="", websocket_connect_timeout=30, proxy_forwarded_address_header=None, proxy_forwarded_port_header=None):
+    def __init__(self, channel_layer, action_logger=None, send_channel="http.response!", timeout=120, websocket_timeout=86400, ping_interval=20, ping_timeout=30, ws_protocols=None, root_path="", websocket_connect_timeout=30, proxy_forwarded_address_header=None, proxy_forwarded_port_header=None):
         http.HTTPFactory.__init__(self)
         self.channel_layer = channel_layer
         self.action_logger = action_logger
