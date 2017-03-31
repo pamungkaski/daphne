@@ -54,7 +54,7 @@ class WebRequest(http.Request):
             # Easy factory link
             self.factory = self.channel.factory
             # Make a name for our reply channel
-            self.reply_channel = self.factory.replys_channel()
+            self.reply_channel = self.factory.make_send_channel(self.channel)
             # Tell factory we're that channel's client
             self.last_keepalive = time.time()
             self.factory.reply_protocols[self.reply_channel] = self
@@ -341,12 +341,12 @@ class HTTPFactory(http.HTTPFactory):
             logger.error("Cannot build protocol: %s" % traceback.format_exc())
             raise
 
-    def make_send_channel(self):
+    def make_send_channel(self,channel):
         """
         Makes a new send channel for a protocol with our process prefix.
         """
         protocol_id = "".join(random.choice(string.ascii_letters) for i in range(10))
-        self.send_channel = self.reply_protocols[self.reply_channel]
+        self.send_channel = self.reply_protocols[channel]
         return self.send_channel + protocol_id
 
     def reply_channels(self):
