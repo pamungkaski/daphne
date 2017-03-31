@@ -54,7 +54,7 @@ class WebRequest(http.Request):
             # Easy factory link
             self.factory = self.channel.factory
             # Make a name for our reply channel
-            self.reply_channel = self.factory.make_send_channel(self.channel)
+            self.reply_channel = self.factory.make_send_channel()
             # Tell factory we're that channel's client
             self.last_keepalive = time.time()
             self.factory.reply_protocols[self.reply_channel] = self
